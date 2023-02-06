@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -30,13 +31,13 @@ public class User implements UserDetails {
 
    @Column(name = "password")
    private String password;
-   @ManyToMany(cascade = CascadeType.PERSIST)
+   @ManyToMany(fetch = FetchType.LAZY)
    @JoinTable(
            name = "user_role"
            , joinColumns = @JoinColumn(name = "user_id")
            , inverseJoinColumns = @JoinColumn(name = "role_id")
    )
-   private Set<Role> roles;
+   private Set<ru.kata.spring.boot_security.demo.model.Role> roles;
 
 
 
@@ -51,11 +52,11 @@ public class User implements UserDetails {
       this.password = password;
    }
 
-   public Set<Role> getRoles() {
+   public Set<ru.kata.spring.boot_security.demo.model.Role> getRoles() {
       return roles;
    }
 
-   public void setRoles(Set<Role> roles) {
+   public void setRoles(Set<ru.kata.spring.boot_security.demo.model.Role> roles) {
       this.roles = roles;
    }
 

@@ -13,13 +13,13 @@ public class Role implements GrantedAuthority {
     private Long id;
 
     @Column(name = "role")
-    private String nameRole;
+    private String name;
 
     public Role() {
     }
 
-    public Role(String nameRole) {
-        this.nameRole = nameRole;
+    public Role(String name) {
+        this.name = name;
     }
 
     public Long getId() {
@@ -30,23 +30,23 @@ public class Role implements GrantedAuthority {
         this.id = id;
     }
 
-    public String getNameRole() {
-        return nameRole;
+    public String getName() {
+        return name;
     }
 
-    public void setNameRole(String nameRole) {
-        this.nameRole = nameRole;
+    public void setName(String nameRole) {
+        this.name = name;
     }
 
 
 
     @Override
     public String getAuthority() {
-        return getNameRole();
+        return getName();
     }
     @Override
     public String toString() {
-        return this.nameRole;
+        return this.name.substring(5);
     }
 
     @Override
