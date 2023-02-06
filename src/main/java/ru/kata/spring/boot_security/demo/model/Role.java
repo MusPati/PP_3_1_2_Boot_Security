@@ -1,76 +1,75 @@
 package ru.kata.spring.boot_security.demo.model;
 
+
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
-@Table(name = "roles")
+@Table(name="role")
 public class Role implements GrantedAuthority {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
 
-    @Column(name = "role")
-    private String nameRole;
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    int id;
+
+    @Column(name = "name")
+    private String roleName;
+
+    @Transient
+    @ManyToMany(mappedBy = "role")
+    private Set<User> users;
 
     public Role() {
+
     }
 
-    public Role(String nameRole) {
-        this.nameRole = nameRole;
+    public Role(String roleName) {
+        this.roleName = roleName;
     }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNameRole() {
-        return nameRole;
-    }
-
-    public void setNameRole(String nameRole) {
-        this.nameRole = nameRole;
-    }
-
-
 
     @Override
     public String getAuthority() {
-        return getNameRole();
+        return getRoleName();
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
     @Override
     public String toString() {
-        return this.nameRole;
+        return getRoleName().replace("ROLE_", "");
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Role role = (Role) o;
+
+        return roleName.equals(role.roleName) && (id == role.id);
     }
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        int result = id;
+        result = 31 * result + roleName.hashCode();
         return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Role other = (Role) obj;
-        if (id == null) {
-            if (other.id != null)
-                return false;
-        } else if (!id.equals(other.id))
-            return false;
-        return true;
     }
 }
